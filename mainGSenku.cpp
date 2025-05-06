@@ -83,7 +83,7 @@ void mostrarTablero(const tpTablero & tablero){
 
 
 int main(){
-    string nomTablero;
+    string nomTablero = "tableros_modelo/tableroTest.txt" ;
     tpTablero tablero;
     inicializarTablero(nomTablero, tablero);
     mostrarTablero(tablero);
