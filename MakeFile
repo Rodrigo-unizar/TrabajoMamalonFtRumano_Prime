@@ -1,0 +1,34 @@
+#------------------------------------------------------------------------------
+# File:   Makefile
+# Author: Programación II-Unizar
+# Date:   mayo 2025
+# Coms:   Makefile para compilar Trabajo GSenku   
+#------------------------------------------------------------------------------
+
+#---------------------------------------------------------
+# Definición de macros
+CC = g++
+CPPFLAGS = -std=c++11
+RM = rm -f
+
+#---------------------------------------------------------
+# Regla principal
+all: mainGSenku
+
+#---------------------------------------------------------
+# Compilación
+mainGSenku.o: mainGSenku.cpp GSenku.hpp
+	${CC} ${CPPFLAGS} -I ../TrabajoMamalonFtRumano_Prime -c mainGSenku.cpp
+
+#GSenku.o: mainGSenku.cpp GSenku.hpp
+#	${CC} ${CPPFLAGS} -I ../TrabajoMamalonFtRumano_Prime -c mainGSenku.cpp
+
+#---------------------------------------------------------
+# Linkado
+mainGSenku: mainGSenku.o 
+	${CC} ${CPPFLAGS} -o mainGSenku mainGSenku.o -I ../TrabajoMamalonFtRumano_Prime
+
+#---------------------------------------------------------
+# Limpieza
+clean:
+	${RM} mainGSenku.o  mainGSenku
