@@ -13,27 +13,32 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero){
     char estado;
 
     f.open(nombreFichero);
-
-    
     if(f.is_open()){
         f >> tablero.nfils;
+        cout << tablero.nfils << endl;
         f >> tablero.ncols;
+        cout << tablero.ncols << endl;
+        f.ignore();
 
         for(int i = 0; i < tablero.nfils;i++){
             for(int j = 0; j < tablero.ncols;j++){
                 f.get(estado);
                 if(estado == '-'){
-                    tablero.matriz[i][j] = NO_USADA;
+                    tablero.matriz[i][j] = NO_USADA;    
+                    //f.ignore();           
                 } else if(estado == 'x'){
                     tablero.matriz[i][j] = VACIA;
+                    //f.ignore();
                 } else if(estado == 'o'){
                     tablero.matriz[i][j] = OCUPADA;
-                }else{
-                    f.close();
-                    return false;
+                    //f.ignore();
                 }
+                f.ignore();
             }
+            
         }
+        f.close();
+        return false;
 
     }else{
         cerr << "No se ha podido abrir el fichero " << nombreFichero << endl;
@@ -83,7 +88,7 @@ void mostrarTablero(const tpTablero & tablero){
 
 
 int main(){
-    string nomTablero = "tableros_modelo/tableroTest.txt" ;
+    string nomTablero = "tableros_modelo/tableroTest.txt";
     tpTablero tablero;
     inicializarTablero(nomTablero, tablero);
     mostrarTablero(tablero);
