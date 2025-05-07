@@ -11,52 +11,79 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero){
 
     ifstream f;
     char estado;
-
     f.open(nombreFichero);
     if(f.is_open()){
         f >> tablero.nfils;
-        cout << tablero.nfils << endl;
-        f >> tablero.ncols;
-        cout << tablero.ncols << endl;
         f.ignore();
-
-        for(int i = 0; i < tablero.nfils;i++){
-            for(int j = 0; j < tablero.ncols;j++){
-                f.get(estado);
+        f >> tablero.ncols;
+        f.ignore();
+        
+        for(int i = 0; i < tablero.nfils; i++){
+            for(int j = 0; j < tablero.ncols; j++){
+                f >> estado;
                 if(estado == '-'){
-                    tablero.matriz[i][j] = NO_USADA;    
-                    //f.ignore();           
+                    tablero.matriz[i][j] = NO_USADA; 
+                                
                 } else if(estado == 'x'){
                     tablero.matriz[i][j] = VACIA;
-                    //f.ignore();
+                    
                 } else if(estado == 'o'){
                     tablero.matriz[i][j] = OCUPADA;
-                    //f.ignore();
-                }
-                f.ignore();
+                    
+                }  
+                 
             }
+            f.ignore();
             
         }
         f.close();
-        return false;
+        return true;
 
-    }else{
+    }  else {
         cerr << "No se ha podido abrir el fichero " << nombreFichero << endl;
         return false;
     }
 
-    f.close();
-    return true;
 }
 
 // Pre: true 
 // Post: lee los movimientos válidos del fichero que se le pasa como argumento 
 //      inicializando la estructura y devolviendo true si todo ha ido bien y false si ha habido algún error
-//bool inicializarMovimientosValidos(const string nombreFichero, tpMovimientosValidos &movimientos);
+bool inicializarMovimientosValidos(const string nombreFichero, tpMovimientosValidos &movimientos){
+    ifstream f;
+    char estado;
+    int cuenta = 0;
+
+    f.open(nombreFichero);
+    if(f.is_open()){
+
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                f >> estado;
+                if(estado == '-'){
+                    movimientos.validos[cuenta] = false;
+                    cuenta++;
+                } else if(estado == '+'){
+                    movimientos.validos[cuenta] = true;
+                    cuenta++;
+                }
+
+            }
+            f.ignore();
+        }
+        f.close();
+        return true;
+
+    } else {
+        cerr << "No se ha podido abrir el fichero " << nombreFichero << endl;
+        return false;
+    }
+
+}
 
 // Pre: tablero contiene el estado actual de la ejecución de la búsqueda de la solución
 // Post: Se ha mostrado el tablero por pantalla
-void mostrarTablero(const tpTablero & tablero){
+void mostrarTablero(const tpTablero &tablero){
     
     for(int i = 0;i < tablero.nfils;i++){
         for(int j = 0;j < tablero.ncols;j++){
@@ -64,7 +91,7 @@ void mostrarTablero(const tpTablero & tablero){
                 cout << "- ";
             }else if(tablero.matriz[i][j] == VACIA){
                 cout << "x ";
-            }else{
+            }else if(tablero.matriz[i][j] == OCUPADA){
                 cout << "o ";
             }
         }
@@ -89,7 +116,10 @@ void mostrarTablero(const tpTablero & tablero){
 
 int main(){
     string nomTablero = "tableros_modelo/tableroTest.txt";
+    string nombreMov = "movimientos/movimientosClasicos.txt";
     tpTablero tablero;
+    tpMovimientosValidos movimientos;
     inicializarTablero(nomTablero, tablero);
+    inicializarMovimientosValidos(nombreMov, movimientos);
     mostrarTablero(tablero);
 }
