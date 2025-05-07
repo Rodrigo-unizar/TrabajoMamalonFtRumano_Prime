@@ -66,6 +66,9 @@ bool inicializarMovimientosValidos(const string nombreFichero, tpMovimientosVali
                 } else if(estado == '+'){
                     movimientos.validos[cuenta] = true;
                     cuenta++;
+                } else {
+                   
+                    continue;
                 }
 
             }
@@ -114,12 +117,32 @@ void mostrarTablero(const tpTablero &tablero){
 //void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &solucion); 
 
 
+void comprobarLeerMovsValidos(const string nombreFichero, tpMovimientosValidos &movimientos){
+    int cuenta = 0;
+    for(int i = 0;i < 3;i++){
+        for(int j = 0;j < 3; j++){
+            if(i == 1 && j==1){
+                cout << "  ";
+            } else if(movimientos.validos[cuenta] == false){
+                cout << "- ";
+                cuenta++;
+            }else if(movimientos.validos[cuenta] == true){
+                cout << "+ ";
+                cuenta++;
+            }   
+        }
+        cout << endl;
+    }
+}
+
 int main(){
-    string nomTablero = "tableros_modelo/tableroTest.txt";
+    string nomTablero = "tableros_modelo/tableroRaroArriba.txt";
     string nombreMov = "movimientos/movimientosClasicos.txt";
     tpTablero tablero;
     tpMovimientosValidos movimientos;
-    inicializarTablero(nomTablero, tablero);
     inicializarMovimientosValidos(nombreMov, movimientos);
+    inicializarTablero(nomTablero, tablero);
+    
+    comprobarLeerMovsValidos(nombreMov, movimientos);
     mostrarTablero(tablero);
 }
