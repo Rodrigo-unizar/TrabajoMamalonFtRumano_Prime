@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream> 
+#include "solucion.hpp"
 
 using namespace std;
 

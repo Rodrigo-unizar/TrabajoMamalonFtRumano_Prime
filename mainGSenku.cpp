@@ -1,4 +1,5 @@
 #include "GSenku.hpp"
+#include "solucion.hpp"
 #include <iostream>
 #include <fstream>
 
@@ -108,7 +109,33 @@ void mostrarTablero(const tpTablero &tablero){
 //      solucionParcial contiene la solución actual como lista de movimientos, En el tablero se han colocada las n primeras piezas de vEntrada, en la columnas indicadas respectivamente en vSalida
 // Post: solucionParcial contendrá la lista de movimientos completa (si no se llega a una solución, estará vacía, numMovs == 0)
 //       Devuelve 1 si encuentra solución, -1 si no la encuentra.
-//int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo=0);
+int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo=0){
+
+    tpPosicion posicion;
+    //definir posicion inicial 
+    tpMovimientoPieza movPieza;
+    movPieza.origen = posicion;
+
+    int sol = -1;
+
+    for(int i = 1; i < 8; i++){
+
+        if(movValidos.validos[i]){
+
+            //logica que no se como hacer para discernir casos de manera que no ocupe 800 lineas
+
+            if(comprobarPosicion(movPieza, solucionParcial)){
+
+                sol = buscarSolucion(tablero, movValidos, solucionParcial, retardo);
+                
+
+            }
+            
+        }
+
+    }
+
+}
 
 
 // Pre: listaMovimientos contiene la lista de movimientos con la solucion 
@@ -136,10 +163,17 @@ void comprobarLeerMovsValidos(const string nombreFichero, tpMovimientosValidos &
 }
 
 int main(){
+
+    
+
     string nomTablero = "tableros_modelo/tableroRaroArriba.txt";
     string nombreMov = "movimientos/movimientosClasicos.txt";
+
     tpTablero tablero;
+    
+
     tpMovimientosValidos movimientos;
+
     inicializarMovimientosValidos(nombreMov, movimientos);
     inicializarTablero(nomTablero, tablero);
     
