@@ -1,6 +1,8 @@
 #include "GSenku.hpp"
 #include <iostream>
 #include <fstream>
+#include <time.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -106,6 +108,7 @@ void mostrarTablero(const tpTablero &tablero){
         }
         cout << endl;
     }
+    cout << endl;
 
 }
 
@@ -160,6 +163,10 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                                     solucionParcial.movs[solucionParcial.numMovs].origen = pos;
                                     solucionParcial.movs[solucionParcial.numMovs].destino = destino;
                                     solucionParcial.numMovs ++;
+                                    if(retardo > 0){
+                                        mostrarTablero(tablero);
+                                        usleep(1000 * retardo);
+                                    }
                                     //hace el siguiente estado
                                     int sol = buscaSolucion(tablero, movValidos, solucionParcial, retardo);
                                     
@@ -173,6 +180,7 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                                     tablero.matriz[pos.x][pos.y] = OCUPADA;
                                     tablero.matriz[salto.x][salto.y] = OCUPADA;
                                     tablero.matriz[destino.x][destino.y] = VACIA;
+
                                     
                                 }
                             }
@@ -246,16 +254,15 @@ int main(){
     tpTablero tablero;
     
     tpListaMovimientos solParcial;
-    int retardo = 0;
+    int retardo = 2500;
     tpMovimientosValidos movimientos;
 
     inicializarMovimientosValidos(nombreMov, movimientos);
     inicializarTablero(nomTablero, tablero);
     
-    comprobarLeerMovsValidos(nombreMov, movimientos);
-    mostrarTablero(tablero);
-    int sol = buscaSolucion(tablero, movimientos, solParcial, retardo);
-    cout << sol;
+
+    buscaSolucion(tablero, movimientos, solParcial, retardo);
     escribeListaMovimientos(nombreSol, solParcial);
+
     
 }
