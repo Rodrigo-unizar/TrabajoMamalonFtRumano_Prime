@@ -121,7 +121,7 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
     tpPosicion salto;//posicion de la pieza que salta
     bool posValida;
     //Caso base
-    if(!comprobarTablero(tablero)){
+    if(comprobarTablero(tablero)){
         
         return 1;
         
@@ -133,7 +133,7 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                 pos.y = j;
                 pos.x = i;
                 if(tablero.matriz[pos.x][pos.y] == OCUPADA){    
-
+                    
                     for(int w = 0; w < 8;w++){ //pa comprobar todos los movimientos
                         
                         if(movValidos.validos[w]){ // si se puede mover hace toda la logica 
@@ -163,6 +163,7 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                                     solucionParcial.numMovs ++;
                                     //hace el siguiente estado
                                     int sol = buscaSolucion(tablero, movValidos, solucionParcial, retardo);
+                                    
                                     if(sol == 1){
                                          //si es valido se mantine con los cambios 
                                         return sol;
@@ -239,7 +240,7 @@ void comprobarLeerMovsValidos(const string nombreFichero, tpMovimientosValidos &
 int main(){
 
     string nomTablero = "tableros_modelo/tableroDos.txt";
-    string nombreMov = "movimientos/movimientosClasicos.txt";
+    string nombreMov = "movimientos/movimientosCompletos.txt";
     string nombreSol = "solucion.txt";
 
     tpTablero tablero;
