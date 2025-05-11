@@ -1,9 +1,15 @@
 #include "GSenku.hpp"
-#include "solucion.hpp"
 #include <iostream>
 #include <fstream>
 
 using namespace std;
+
+
+const int DESPLAZAMIENTOS[8][2] = {
+    {-1, -1}, {-1, 0}, {-1, 1},  // Superior izquierda, superior, superior derecha
+    {0, -1},          {0, 1},    // Izquierda, derecha
+    {1, -1}, {1, 0}, {1, 1}     // Inferior izquierda, inferior, inferior derecha
+};
 
 // Pre: true
 // Post: lee la configuración y el estado del tablero del fichero de configuración que se le pasa como argumento
@@ -109,35 +115,84 @@ void mostrarTablero(const tpTablero &tablero){
 //      solucionParcial contiene la solución actual como lista de movimientos, En el tablero se han colocada las n primeras piezas de vEntrada, en la columnas indicadas respectivamente en vSalida
 // Post: solucionParcial contendrá la lista de movimientos completa (si no se llega a una solución, estará vacía, numMovs == 0)
 //       Devuelve 1 si encuentra solución, -1 si no la encuentra.
-int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo=0){
+int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo){
 
-    tpPosicion posicion;
-    //definir posicion inicial 
-    tpMovimientoPieza movPieza;
-    movPieza.origen = posicion;
+    tpPosicion pos;
+    bool posValida;
+    //Caso base
+    if(comprobarTablero(tablero)){
+        return 1;
+    }else {
+        for(int i = 0;i < tablero.nfils;i++){
+            pos.x = i;
+            for(int j = 0;j < tablero.ncols;j++){
+                pos.y = j;
+                if(tablero.matriz[pos.x][pos.y] == OCUPADA){    //Aqui hay que hablar para ver que hacemos en caso de que la posicion central no sea una valida para empezar tipo como queremos mover el inicio
 
-    int sol = -1;
+                    for(int w = 0; w < 8;w++){ //pa comprobar todos los movimientos
 
-    for(int i = 1; i < 8; i++){
+                        if(movValidos.validos[w]){ // si se puede mover hace toda la logica 
 
-        if(movValidos.validos[i]){
+                            tpPosicion salto;//posicion de la pieza que salta
+                            salto.x = pos.x + DESPLAZAMIENTOS[w][0];
+                            salto.y = pos.y + DESPLAZAMIENTOS[w][1];
+                            tpPosicion destino ;//posicion destino 
+                            destino.x = salto.x + DESPLAZAMIENTOS[w][0];
+                            destino.y = salto.y + DESPLAZAMIENTOS[w][1];
+                            //comprobar que la posicion esta dentro del tablero 
+                            if (salto.x >= 0 && salto.x < 3 &&
+                                salto.y >= 0 && salto.y < 3 &&
+                                destino.x >= 0 && destino.x < 3 &&
+                                destino.y >= 0 && destino.y < 3){ 
 
-            //logica que no se como hacer para discernir casos de manera que no ocupe 800 lineas
+                                posValida = tablero.matriz[salto.x][salto.y] == OCUPADA && tablero.matriz[destino.x][destino.y] == VACIA; // mira a ver si puede hacer el salto 
+                                if(posValida){
+                                    //si la posicion es valida caambia todo a la nueva posible solucion
+                                    tablero.matriz[pos.x][pos.y] = VACIA;
+                                    tablero.matriz[destino.x][destino.y] = OCUPADA;
 
-            if(comprobarPosicion(movPieza, solucionParcial)){
+                                    solucionParcial.movs[solucionParcial.numMovs].origen = pos;
+                                    solucionParcial.movs[solucionParcial.numMovs].destino = destino;
+                                    solucionParcial.numMovs ++;
 
-                sol = buscarSolucion(tablero, movValidos, solucionParcial, retardo);
-                
+                                    //hace el siguiente estado
+                                    int sol = buscaSolucion(tablero, movValidos, solucionParcial, retardo);
+                                    if(sol == 1){
+                                         //si es valido se mantine con los cambios 
+                                        return sol;
 
+                                    }else{
+                                        //sino vuelve atras y sigue con los bucles
+                                        solucionParcial.numMovs--;
+                                        tablero.matriz[pos.x][pos.y] = OCUPADA;
+                                        tablero.matriz[destino.x][destino.y] = VACIA;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            
-        }
-
+        }        
     }
-
+    return -1; //Arriba todas las veces que puede dar pos valida o que sirve lo que hace es return 1 por lo que si llega aqui si o si es pos invalida:
 }
 
 
+//Post: NOs dice si el tablero esta Vacio o No 
+bool comprobarTablero(const tpTablero tablero){
+
+    bool Vacio = true;
+
+    for(int i = 0;i < tablero.nfils && Vacio;i++){
+        for(int j = 0;j < tablero.ncols && Vacio ;j++){
+            if(tablero.matriz[i][j] == OCUPADA){
+                Vacio = false;
+            }
+        }
+    }
+    return Vacio;
+}
 // Pre: listaMovimientos contiene la lista de movimientos con la solucion 
 // Post: escribe la lista de movimientos en el fichero que se le pasa como argumento siguiendo el 
 //      formato especificado en el guión (si está vacía, se escribe un -1 en el fichero)
@@ -166,12 +221,14 @@ int main(){
 
     
 
-    string nomTablero = "tableros_modelo/tableroRaroArriba.txt";
+    string nomTablero = "tableros_modelo/tableroDos.txt";
     string nombreMov = "movimientos/movimientosClasicos.txt";
 
     tpTablero tablero;
     
-
+    tpListaMovimientos solParcial;
+    solParcial.numMovs = 0;
+    int retardo = 0;
     tpMovimientosValidos movimientos;
 
     inicializarMovimientosValidos(nombreMov, movimientos);
@@ -179,4 +236,7 @@ int main(){
     
     comprobarLeerMovsValidos(nombreMov, movimientos);
     mostrarTablero(tablero);
+    int sol = buscaSolucion(tablero, movimientos, solParcial, retardo);
+    cout << sol;
+
 }

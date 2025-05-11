@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream> 
-#include "solucion.hpp"
+
 
 using namespace std;
 
@@ -13,7 +13,7 @@ enum tpEstadoCelda {
 }; 
 
 enum tpDireccion {
-    superiorIzquierda=0, 
+    superiorIzquierda = 0, 
     superior, 
     superiorDerecha, 
     izquierda, 
@@ -108,6 +108,8 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
 //      formato especificado en el guión (si está vacía, se escribe un -1 en el fichero)
 void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &solucion); 
 
+
+bool comprobarTablero(const tpTablero tablero);
 //////////////////////////////////////////////////////////////////////////////
 // Salida con atributos
 //
