@@ -99,11 +99,11 @@ void mostrarTablero(const tpTablero &tablero){
     for(int i = 0;i < tablero.nfils;i++){
         for(int j = 0;j < tablero.ncols;j++){
             if(tablero.matriz[i][j] == NO_USADA){
-                cout << "- ";
+                cout << "\033[30;47m" <<" - " << "\033[0m";
             }else if(tablero.matriz[i][j] == VACIA){
-                cout << "x ";
+                cout << "\033[1;31;46m" <<" x " << "\033[0m";
             }else if(tablero.matriz[i][j] == OCUPADA){
-                cout << "o ";
+                cout << "\033[1;37;46m" <<" o " << "\033[0m";
             }
         }
         cout << endl;
@@ -111,6 +111,7 @@ void mostrarTablero(const tpTablero &tablero){
     cout << endl;
 
 }
+
 
 // Pre: tablero contiene el estado inicial del que se parte para la búsqueda, 
 //      movimientosValidos contiene los movimientos que están permitidos, 
