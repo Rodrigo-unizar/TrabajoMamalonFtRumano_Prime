@@ -239,8 +239,8 @@ void comprobarLeerMovsValidos(const string nombreFichero, tpMovimientosValidos &
 
 int main(){
 
-    string nomTablero = "tableros_modelo/tableroDos.txt";
-    string nombreMov = "movimientos/movimientosCompletos.txt";
+    string nomTablero = "tableros_modelo/tableroEuropeo.txt";
+    string nombreMov = "movimientos/movimientosDiagonal.txt";
     string nombreSol = "solucion.txt";
 
     tpTablero tablero;
