@@ -123,10 +123,11 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
         return 1;
     }else {
         for(int i = 0;i < tablero.nfils;i++){
-            pos.x = i;
+            
             for(int j = 0;j < tablero.ncols;j++){
                 pos.y = j;
-                if(tablero.matriz[pos.x][pos.y] == OCUPADA){    //Aqui hay que hablar para ver que hacemos en caso de que la posicion central no sea una valida para empezar tipo como queremos mover el inicio
+                pos.x = i;
+                if(tablero.matriz[pos.x][pos.y] == OCUPADA){    
 
                     for(int w = 0; w < 8;w++){ //pa comprobar todos los movimientos
 
@@ -139,15 +140,16 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                             destino.x = salto.x + DESPLAZAMIENTOS[w][0];
                             destino.y = salto.y + DESPLAZAMIENTOS[w][1];
                             //comprobar que la posicion esta dentro del tablero 
-                            if (salto.x >= 0 && salto.x < 3 &&
-                                salto.y >= 0 && salto.y < 3 &&
-                                destino.x >= 0 && destino.x < 3 &&
-                                destino.y >= 0 && destino.y < 3){ 
+                            if (salto.x >= 0 && salto.x < tablero.nfils &&
+                                salto.y >= 0 && salto.y < tablero.ncols &&
+                                destino.x >= 0 && destino.x < tablero.nfils &&
+                                destino.y >= 0 && destino.y < tablero.ncols){ 
 
                                 posValida = tablero.matriz[salto.x][salto.y] == OCUPADA && tablero.matriz[destino.x][destino.y] == VACIA; // mira a ver si puede hacer el salto 
                                 if(posValida){
                                     //si la posicion es valida caambia todo a la nueva posible solucion
                                     tablero.matriz[pos.x][pos.y] = VACIA;
+                                    tablero.matriz[salto.x][salto.y] = VACIA;
                                     tablero.matriz[destino.x][destino.y] = OCUPADA;
 
                                     solucionParcial.movs[solucionParcial.numMovs].origen = pos;
@@ -164,6 +166,7 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                                         //sino vuelve atras y sigue con los bucles
                                         solucionParcial.numMovs--;
                                         tablero.matriz[pos.x][pos.y] = OCUPADA;
+                                        tablero.matriz[salto.x][salto.y] = OCUPADA;
                                         tablero.matriz[destino.x][destino.y] = VACIA;
                                     }
                                 }
@@ -220,8 +223,8 @@ void comprobarLeerMovsValidos(const string nombreFichero, tpMovimientosValidos &
 
 int main(){
 
-    string nomTablero = "tableros_modelo/tableroDos.txt";
-    string nombreMov = "movimientos/movimientosClasicos.txt";
+    string nomTablero = "tableros_modelo/tableroEuropeo.txt";
+    string nombreMov = "movimientos/movimientosDiagonal.txt";
 
     tpTablero tablero;
     
