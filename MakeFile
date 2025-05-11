@@ -17,15 +17,15 @@ all: mainGSenku
 
 #---------------------------------------------------------
 # Compilación
-mainGSenku.o: mainGSenku.cpp GSenku.hpp
-	${CC} ${CPPFLAGS} -I ../TrabajoMamalonFtRumano_Prime -c mainGSenku.cpp
+GSenku.o: GSenku.cpp GSenku.hpp
+	${CC} ${CPPFLAGS} -I ../TrabajoMamalonFtRumano_Prime -c GSenku.cpp
 
-#GSenku.o: mainGSenku.cpp GSenku.hpp
-#	${CC} ${CPPFLAGS} -I ../TrabajoMamalonFtRumano_Prime -c mainGSenku.cpp
+mainGSenku.o: mainGSenku.cpp GSenku.cpp GSenku.hpp
+	${CC} ${CPPFLAGS} -I ../TrabajoMamalonFtRumano_Prime -c mainGSenku.cpp
 
 #---------------------------------------------------------
 # Linkado
-mainGSenku: mainGSenku.o 
+mainGSenku: mainGSenku.o GSenku.o
 	${CC} ${CPPFLAGS} -o mainGSenku mainGSenku.o -I ../TrabajoMamalonFtRumano_Prime
 
 #---------------------------------------------------------
