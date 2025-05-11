@@ -210,7 +210,7 @@ void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &so
     f.open(nombreFichero);
     if(f.is_open()){
         for(unsigned i = 0; i < solucion.numMovs; i++){
-            f << solucion.movs[i].origen.x << "," << solucion.movs[i].origen.y << ";" << solucion.movs[i].destino.x <<  solucion.movs[i].destino.y << endl;
+            f << solucion.movs[i].origen.x << "," << solucion.movs[i].origen.y << ";" << solucion.movs[i].destino.x << "," << solucion.movs[i].destino.y << endl;
             
         }
         f.close();
