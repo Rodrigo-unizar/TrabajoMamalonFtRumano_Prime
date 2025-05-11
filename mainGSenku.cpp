@@ -200,8 +200,18 @@ bool comprobarTablero(const tpTablero tablero){
 // Pre: listaMovimientos contiene la lista de movimientos con la solucion 
 // Post: escribe la lista de movimientos en el fichero que se le pasa como argumento siguiendo el 
 //      formato especificado en el guión (si está vacía, se escribe un -1 en el fichero)
-//void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &solucion); 
-
+void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &solucion){
+    ofstream f;
+    f.open(nombreFichero);
+    if(f.is_open()){
+        for(unsigned i = 0; i < solucion.numMovs; i++){
+            f << solucion.movs[i].origen.x << "," << solucion.movs[i].origen.y << ";" << solucion.movs[i].destino.x <<  solucion.movs[i].destino.y << endl;
+        }
+        f.close();
+    } else{
+        cerr << "No se ha podido abrir el fichero: " << nombreFichero << endl;
+    }
+} 
 
 void comprobarLeerMovsValidos(const string nombreFichero, tpMovimientosValidos &movimientos){
     int cuenta = 0;
@@ -225,6 +235,7 @@ int main(){
 
     string nomTablero = "tableros_modelo/tableroEuropeo.txt";
     string nombreMov = "movimientos/movimientosDiagonal.txt";
+    string nombreSol = "solucion.txt"
 
     tpTablero tablero;
     
@@ -240,5 +251,6 @@ int main(){
     mostrarTablero(tablero);
     int sol = buscaSolucion(tablero, movimientos, solParcial, retardo);
     cout << sol;
+    escribeListaMovimientos(nombreSol, solParcial);
 
 }
