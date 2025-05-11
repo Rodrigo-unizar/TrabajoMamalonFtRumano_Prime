@@ -36,7 +36,6 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero){
                     
                 } else if(estado == 'o'){
                     tablero.matriz[i][j] = OCUPADA;
-                    
                 }  
                  
             }
@@ -183,15 +182,17 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
 bool comprobarTablero(const tpTablero tablero){
 
     bool Vacio = true;
+    int nFichas = 0;
 
     for(int i = 0;i < tablero.nfils && Vacio;i++){
         for(int j = 0;j < tablero.ncols && Vacio ;j++){
             if(tablero.matriz[i][j] == OCUPADA){
                 Vacio = false;
+                nFichas++;
             }
         }
     }
-    return Vacio;
+    return nFichas == 1;
 }
 // Pre: listaMovimientos contiene la lista de movimientos con la solucion 
 // Post: escribe la lista de movimientos en el fichero que se le pasa como argumento siguiendo el 
@@ -218,8 +219,6 @@ void comprobarLeerMovsValidos(const string nombreFichero, tpMovimientosValidos &
 }
 
 int main(){
-
-    
 
     string nomTablero = "tableros_modelo/tableroDos.txt";
     string nombreMov = "movimientos/movimientosClasicos.txt";
