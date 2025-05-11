@@ -20,7 +20,7 @@ all: mainGSenku
 GSenku.o: GSenku.cpp GSenku.hpp
 	${CC} ${CPPFLAGS} -I ../TrabajoMamalonFtRumano_Prime -c GSenku.cpp
 
-mainGSenku.o: mainGSenku.cpp GSenku.cpp GSenku.hpp
+mainGSenku.o: mainGSenku.cpp GSenku.hpp
 	${CC} ${CPPFLAGS} -I ../TrabajoMamalonFtRumano_Prime -c mainGSenku.cpp
 
 #---------------------------------------------------------

@@ -245,25 +245,3 @@ void comprobarLeerMovsValidos(const string nombreFichero, tpMovimientosValidos &
     }
 }
 
-int main(){
-
-    string nomTablero = "tableros_modelo/tableroEuropeo.txt";
-    string nombreMov = "movimientos/movimientosCompletos.txt";
-    string nombreSol = "solucion.txt";
-
-    tpTablero tablero;
-    
-    tpListaMovimientos solParcial;
-    int retardo = 2500;
-    tpMovimientosValidos movimientos;
-
-    inicializarMovimientosValidos(nombreMov, movimientos);
-    inicializarTablero(nomTablero, tablero);
-    
-   
-    buscaSolucion(tablero, movimientos, solParcial, retardo);
-    
-    escribeListaMovimientos(nombreSol, solParcial);
-
-    
-}
