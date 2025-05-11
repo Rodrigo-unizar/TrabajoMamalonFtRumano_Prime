@@ -30,6 +30,7 @@ int main(int argc, char* argv[]){
 
     inicializarMovimientosValidos(nombreMov, movimientos);
     inicializarTablero(nomTablero, tablero);
+    mostrarTablero(tablero);
     buscaSolucion(tablero, movimientos, solParcial, retardo);
     escribeListaMovimientos(FicheroSalida, solParcial);
 
