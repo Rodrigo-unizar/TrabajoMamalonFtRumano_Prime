@@ -2,7 +2,6 @@
 #include <fstream>
 #include "GSenku.hpp"
 
-
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -11,8 +10,9 @@ int main(int argc, char* argv[]){
     string carpetaMov = "movimientos/"; 
     string FicheroTablero;
     string FicheroMovs;
-    int retardo;
-    string FicheroSalida = "solucion.txt";
+    int retardo = -1;
+    string FicheroSalida = "solucion";
+    string txt = ".txt";
 
     FicheroTablero = argv[1];
     FicheroMovs = argv[2];
@@ -25,8 +25,9 @@ int main(int argc, char* argv[]){
     tpListaMovimientos solParcial;
     tpMovimientosValidos movimientos;
 
-    string nomTablero = carpetaTab + FicheroTablero;
-    string nombreMov = carpetaMov + FicheroMovs;
+    string nomTablero = carpetaTab + FicheroTablero + txt;
+    string nombreMov = carpetaMov + FicheroMovs + txt;
+    FicheroSalida = FicheroSalida + txt;
 
     inicializarMovimientosValidos(nombreMov, movimientos);
     inicializarTablero(nomTablero, tablero);

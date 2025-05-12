@@ -74,9 +74,6 @@ bool inicializarMovimientosValidos(const string nombreFichero, tpMovimientosVali
                 } else if(estado == '+'){
                     movimientos.validos[cuenta] = true;
                     cuenta++;
-                } else {
-                   
-                    continue;
                 }
 
             }
@@ -141,7 +138,6 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                     for(int w = 0; w < 8;w++){ //pa comprobar todos los movimientos
                         
                         if(movValidos.validos[w]){ // si se puede mover hace toda la logica 
-
                             
                             salto.x = pos.x + DESPLAZAMIENTOS[w][0];
                             salto.y = pos.y + DESPLAZAMIENTOS[w][1];
@@ -181,7 +177,10 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                                     tablero.matriz[pos.x][pos.y] = OCUPADA;
                                     tablero.matriz[salto.x][salto.y] = OCUPADA;
                                     tablero.matriz[destino.x][destino.y] = VACIA;
-
+                                    if(retardo > 0){
+                                        mostrarTablero(tablero);
+                                        usleep(1000 * retardo);
+                                    }
                                     
                                 }
                             }
@@ -219,8 +218,11 @@ void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &so
     f.open(nombreFichero);
     if(f.is_open()){
         for(unsigned i = 0; i < solucion.numMovs; i++){
-            f << solucion.movs[i].origen.x << "," << solucion.movs[i].origen.y << ";" << solucion.movs[i].destino.x << "," << solucion.movs[i].destino.y << endl;
-            
+            f << solucion.movs[i].origen.x << "," << solucion.movs[i].origen.y << ";" << solucion.movs[i].destino.x << "," << solucion.movs[i].destino.y << endl; 
+        }
+        
+        if(solucion.numMovs == 0){
+            f << -1 << endl;
         }
         f.close();
     } else{
