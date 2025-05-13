@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------
 # File:   Makefile
-# Author: Programación II-Unizar
+# Autores:  Razvan Ghita Calangiu 927460    Rodrigo Herce Alonso 935413
 # Date:   mayo 2025
 # Coms:   Makefile para compilar Trabajo GSenku   
 #------------------------------------------------------------------------------

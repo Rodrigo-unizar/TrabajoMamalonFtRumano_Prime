@@ -1,3 +1,7 @@
+/*Autores:  Razvan Ghita Calangiu 927460
+*           Rodrigo Herce Alonso 935413
+*/         
+
 #include <iostream>
 #include <fstream>
 #include "GSenku.hpp"
